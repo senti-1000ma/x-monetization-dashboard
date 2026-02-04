@@ -168,9 +168,20 @@
 
     <script>
         function showView(viewId) {
-            document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(viewId + '-view').style.display = 'block';
+            console.log('Switching to view:', viewId);
+            document.querySelectorAll('.view-section').forEach(v => {
+                v.style.display = 'none';
+            });
+            document.querySelectorAll('.nav-item').forEach(n => {
+                n.classList.remove('active');
+            });
+            
+            const targetView = document.getElementById(viewId + '-view');
+            if (targetView) {
+                targetView.style.display = 'block';
+            }
+            
+            // Highlight current nav item
             event.currentTarget.classList.add('active');
         }
 
