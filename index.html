@@ -52,10 +52,10 @@
 <body>
     <nav class="sidebar">
         <div class="logo">🦞 OpenClaw Intelligence</div>
-        <a class="nav-item active">📊 Dashboard</a>
-        <a class="nav-item">🔥 X Trends & Memes</a>
-        <a class="nav-item">⛽ Gas Tracker</a>
-        <a class="nav-item">🛠️ System Logs</a>
+        <a href="#" class="nav-item active" onclick="showView('dashboard')">📊 Dashboard</a>
+        <a href="#" class="nav-item" onclick="showView('trends')">🔥 X Trends & Memes</a>
+        <a href="#" class="nav-item">⛽ Gas Tracker</a>
+        <a href="#" class="nav-item">🛠️ System Logs</a>
         
         <div class="api-stats">
             <div style="font-weight: 600; margin-bottom: 10px;">💳 API Usage & Cost</div>
@@ -76,69 +76,90 @@
             </div>
             <div style="text-align: right;">
                 <span style="color: var(--up-color); font-size: 0.8rem;">● System Pacing Active</span><br>
-                <span style="font-size: 0.75rem; color: var(--text-dim);">Last Update: 23:05 KST</span>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">Last Update: 23:15 KST</span>
             </div>
         </header>
 
-        <div class="dashboard-grid">
-            <div class="left-col">
-                <div class="card">
-                    <div class="card-title">📈 Market Flow (BTCUSDT)</div>
-                    <div id="tv_chart_container" class="chart-container"></div>
+        <div id="dashboard-view" class="view-section">
+            <div class="dashboard-grid">
+                <div class="left-col">
+                    <div class="card">
+                        <div class="card-title">📈 Market Flow (BTCUSDT)</div>
+                        <div id="tv_chart_container" class="chart-container"></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">📝 AI Content Strategy & Drafts</div>
+                        
+                        <div class="draft-item">
+                            <div class="draft-meta">TRADING TREND</div>
+                            <div class="draft-content">
+                                "비트코인 14개월 저점 이후 $77k 반등 성공! 🚀 하락장에 떨지 마세요. 이번 반등으로 7억 달러 숏 물량이 청산되었습니다. 유동성 파티의 서막일까요? #Bitcoin #BTC #ShortSqueeze"
+                            </div>
+                        </div>
+
+                        <div class="draft-item">
+                            <div class="draft-meta">X TREND / MEME</div>
+                            <div class="draft-content">
+                                "인공지능(AI)과 크립토의 결합이 다시금 X 트렌드를 장악 중입니다. 🤖⛓️ 밈 코인 메타에서 AI 에이전트 메타로의 전환! 당신의 다음 베팅은? #AI #Crypto #MemeCoin"
+                            </div>
+                        </div>
+
+                        <div class="draft-item">
+                            <div class="draft-meta">GAS ALERT</div>
+                            <div class="draft-content">
+                                "역대급 가스비 0.091 Gwei! ⛽️💨 지금 이더리움 메인넷은 고속도로 프리패스 수준입니다. 미뤄둔 트랜잭션, 지금이 기회입니다. #Ethereum #GasFee #Onchain"
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">📝 AI Content Strategy & Drafts</div>
-                    
-                    <div class="draft-item">
-                        <div class="draft-meta">TRADING TREND</div>
-                        <div class="draft-content">
-                            "비트코인 14개월 저점 이후 $77k 반등 성공! 🚀 하락장에 떨지 마세요. 이번 반등으로 7억 달러 숏 물량이 청산되었습니다. 유동성 파티의 서막일까요? #Bitcoin #BTC #ShortSqueeze"
+                <div class="right-col">
+                    <div class="card" style="height: 100%;">
+                        <div class="card-title">🗞️ Intelligence Feed</div>
+                        <div class="news-list">
+                            <div class="news-item">
+                                <span class="trend-badge">X TREND</span> Michael Burry warnings trending as Gold/Silver markets react.
+                            </div>
+                            <div class="news-item">
+                                <span class="trend-badge">MEME</span> "Buy the Dip" memes resurfacing as BTC stabilizes above $76k.
+                            </div>
+                            <div class="news-item">
+                                <span class="trend-badge">HOT</span> WisdomTree CEO declares Crypto as core business.
+                            </div>
+                            <div class="news-item">
+                                <span class="trend-badge">POLICY</span> Trump WH issues statement on Crypto Bill ethics provisions.
+                            </div>
+                            <div class="news-item">
+                                <span class="trend-badge">TECH</span> Vitalik Buterin's L2 decentralization roadmap update.
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="draft-item">
-                        <div class="draft-meta">X TREND / MEME</div>
-                        <div class="draft-content">
-                            "인공지능(AI)과 크립토의 결합이 다시금 X 트렌드를 장악 중입니다. 🤖⛓️ 밈 코인 메타에서 AI 에이전트 메타로의 전환! 당신의 다음 베팅은? #AI #Crypto #MemeCoin"
-                        </div>
-                    </div>
-
-                    <div class="draft-item">
-                        <div class="draft-meta">GAS ALERT</div>
-                        <div class="draft-content">
-                            "역대급 가스비 0.091 Gwei! ⛽️💨 지금 이더리움 메인넷은 고속도로 프리패스 수준입니다. 미뤄둔 트랜잭션, 지금이 기회입니다. #Ethereum #GasFee #Onchain"
+                        
+                        <div class="card" style="margin-top: 20px; background: rgba(29, 161, 242, 0.05); border-color: var(--trend-color);">
+                            <div class="card-title" style="color: var(--trend-color); font-size: 0.9rem;">💎 X Trending Tags</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                <span class="tag">#BTC740M</span><span class="tag">#GoldSurge</span><span class="tag">#Ondo</span><span class="tag">#AI_Agents</span><span class="tag">#LowGasSummer</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="right-col">
-                <div class="card" style="height: 100%;">
-                    <div class="card-title">🗞️ Intelligence Feed</div>
-                    <div class="news-list">
-                        <div class="news-item">
-                            <span class="trend-badge">X TREND</span> Michael Burry warnings trending as Gold/Silver markets react.
-                        </div>
-                        <div class="news-item">
-                            <span class="trend-badge">MEME</span> "Buy the Dip" memes resurfacing as BTC stabilizes above $76k.
-                        </div>
-                        <div class="news-item">
-                            <span class="trend-badge">HOT</span> WisdomTree CEO declares Crypto as core business.
-                        </div>
-                        <div class="news-item">
-                            <span class="trend-badge">POLICY</span> Trump WH issues statement on Crypto Bill ethics provisions.
-                        </div>
-                        <div class="news-item">
-                            <span class="trend-badge">TECH</span> Vitalik Buterin's L2 decentralization roadmap update.
-                        </div>
+        <div id="trends-view" class="view-section" style="display: none; padding: 25px;">
+            <div class="card">
+                <div class="card-title">🔥 Live X Trends & Meme Analysis</div>
+                <div class="dashboard-grid" style="padding: 0; grid-template-columns: 1fr 1fr;">
+                    <div class="card" style="background: #151a21;">
+                        <h3 style="color: var(--primary-color);">Top Trending (KR)</h3>
+                        <div class="news-item">1. #비트코인_반등</div>
+                        <div class="news-item">2. #가스비_0.1</div>
+                        <div class="news-item">3. #마이클버리_숏</div>
+                        <div class="news-item">4. #AI에이전트</div>
                     </div>
-                    
-                    <div class="card" style="margin-top: 20px; background: rgba(29, 161, 242, 0.05); border-color: var(--trend-color);">
-                        <div class="card-title" style="color: var(--trend-color); font-size: 0.9rem;">💎 X Trending Tags</div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                            <span class="tag">#BTC740M</span><span class="tag">#GoldSurge</span><span class="tag">#Ondo</span><span class="tag">#AI_Agents</span><span class="tag">#LowGasSummer</span>
-                        </div>
+                    <div class="card" style="background: #151a21;">
+                        <h3 style="color: var(--up-color);">Meme Watch</h3>
+                        <p style="font-size: 0.9rem;">현재 X에서 "HODL" 관련 밈과 "Buy the Dip" 짤방이 급격히 확산 중입니다. 하락장 공포가 희망으로 바뀌는 변곡점입니다.</p>
                     </div>
                 </div>
             </div>
@@ -146,6 +167,13 @@
     </div>
 
     <script>
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(viewId + '-view').style.display = 'block';
+            event.currentTarget.classList.add('active');
+        }
+
         new TradingView.widget({
             "width": "100%", "height": 450, "symbol": "BINANCE:BTCUSDT",
             "interval": "D", "timezone": "Asia/Seoul", "theme": "dark", "style": "1",
