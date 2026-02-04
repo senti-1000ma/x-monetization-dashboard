@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw Crypto Intelligence</title>
+    <title>OpenClaw Crypto Intelligence v2.1</title>
     <script src="https://s3.tradingview.com/tv.js"></script>
     <style>
         :root {
@@ -15,146 +15,129 @@
             --border-color: #38444d;
             --up-color: #00c087;
             --down-color: #f84960;
+            --trend-color: #1da1f2;
         }
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* Sidebar */
-        .sidebar { width: 260px; background: #151a21; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px; }
+        .sidebar { width: 280px; background: #151a21; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px; }
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-        .nav-item { padding: 12px 15px; border-radius: 8px; cursor: pointer; color: var(--text-dim); transition: 0.2s; margin-bottom: 5px; text-decoration: none; }
+        .nav-item { padding: 12px 15px; border-radius: 8px; cursor: pointer; color: var(--text-dim); transition: 0.2s; margin-bottom: 5px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
         .nav-item:hover, .nav-item.active { background: var(--card-bg); color: var(--text-main); }
+        
         .api-stats { margin-top: auto; background: rgba(240, 185, 11, 0.05); border: 1px solid rgba(240, 185, 11, 0.2); padding: 15px; border-radius: 12px; font-size: 0.85rem; }
-        .api-stats div { margin-bottom: 5px; }
         .cost-val { color: var(--primary-color); font-weight: bold; }
+        .cost-krw { color: var(--up-color); font-size: 0.8rem; }
 
-        /* Main Content */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
         .header { height: 70px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: #151a21; }
         .ticker-wrap { display: flex; gap: 25px; }
-        .ticker-item { display: flex; flex-direction: column; }
-        .ticker-label { font-size: 0.75rem; color: var(--text-dim); }
         .ticker-price { font-weight: 600; }
         .price-down { color: var(--down-color); }
 
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 380px; gap: 25px; padding: 25px; }
-        
-        /* Cards */
-        .card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border-color); padding: 20px; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .card-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 400px; gap: 20px; padding: 20px; }
+        .card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; }
+        .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
 
-        /* TradingView Area */
-        .chart-container { height: 500px; width: 100%; border-radius: 12px; overflow: hidden; }
+        .chart-container { height: 450px; border-radius: 12px; overflow: hidden; }
 
-        /* Drafts Area */
         .draft-item { border-left: 4px solid var(--primary-color); background: rgba(255,255,255,0.02); padding: 15px; border-radius: 0 12px 12px 0; margin-bottom: 15px; }
-        .draft-tags { display: flex; gap: 8px; margin-bottom: 10px; }
-        .tag { font-size: 0.7rem; background: #2b3139; padding: 3px 8px; border-radius: 4px; color: var(--text-dim); }
-        .draft-content { font-size: 0.95rem; line-height: 1.5; color: var(--text-main); }
+        .draft-meta { font-size: 0.75rem; color: var(--trend-color); margin-bottom: 5px; font-weight: bold; }
+        .tag { font-size: 0.7rem; background: #2b3139; padding: 2px 6px; border-radius: 4px; color: var(--text-dim); margin-right: 5px; }
 
-        /* News Area */
-        .news-list { display: flex; flex-direction: column; gap: 15px; }
-        .news-item { font-size: 0.9rem; padding-bottom: 12px; border-bottom: 1px solid #2b3139; }
+        .news-item { font-size: 0.9rem; padding: 10px 0; border-bottom: 1px solid #2b3139; }
         .news-item:last-child { border-bottom: none; }
-        .news-meta { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 4px; display: flex; gap: 10px; }
-        .news-title { color: var(--text-main); text-decoration: none; display: block; }
-        .news-title:hover { color: var(--primary-color); }
+        .trend-badge { font-size: 0.7rem; padding: 2px 5px; border-radius: 4px; background: var(--trend-color); color: white; margin-right: 8px; }
     </style>
 </head>
 <body>
     <nav class="sidebar">
-        <div class="logo">🦞 OpenClaw AI</div>
+        <div class="logo">🦞 OpenClaw Intelligence</div>
         <a class="nav-item active">📊 Dashboard</a>
-        <a class="nav-item">🗞️ News Feed</a>
+        <a class="nav-item">🔥 X Trends & Memes</a>
         <a class="nav-item">⛽ Gas Tracker</a>
-        <a class="nav-item">📈 Portfolio</a>
-        <a class="nav-item">⚙️ Settings</a>
+        <a class="nav-item">🛠️ System Logs</a>
         
         <div class="api-stats">
-            <div style="font-weight: 600; margin-bottom: 10px;">💳 Session Usage (Est.)</div>
+            <div style="font-weight: 600; margin-bottom: 10px;">💳 API Usage & Cost</div>
             <div>Model: <span style="color:white">Gemini 3 Flash</span></div>
-            <div>In/Out: <span style="color:white">205k / 850</span></div>
-            <div>Session Cost: <span class="cost-val">$0.021</span></div>
-            <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 8px;">*Next report in 45m</div>
+            <div>Tokens: <span style="color:white">~215k In / 1.2k Out</span></div>
+            <div>Cost: <span class="cost-val">$0.025</span></div>
+            <div class="cost-krw">≈ ₩34.5 (1,380원 환율 기준)</div>
+            <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 10px;">* Rate Limit Protection: Active</div>
         </div>
     </nav>
 
     <div class="main-content">
         <header class="header">
             <div class="ticker-wrap">
-                <div class="ticker-item">
-                    <span class="ticker-label">BTC/KRW</span>
-                    <span class="ticker-price price-down">110,808,000 (-0.96%)</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-label">ETH/KRW</span>
-                    <span class="ticker-price price-down">3,262,000 (-1.24%)</span>
-                </div>
-                <div class="ticker-item">
-                    <span class="ticker-label">SOL/KRW</span>
-                    <span class="ticker-price price-down">139,800 (-3.45%)</span>
-                </div>
+                <div class="ticker-item"><span style="font-size: 0.7rem; color: var(--text-dim);">BTC/KRW</span><br><span class="ticker-price price-down">110,808,000 (-0.96%)</span></div>
+                <div class="ticker-item"><span style="font-size: 0.7rem; color: var(--text-dim);">ETH/KRW</span><br><span class="ticker-price price-down">3,262,000 (-1.24%)</span></div>
+                <div class="ticker-item"><span style="font-size: 0.7rem; color: var(--text-dim);">SOL/KRW</span><br><span class="ticker-price price-down">139,800 (-3.45%)</span></div>
             </div>
-            <div style="font-size: 0.85rem; color: var(--text-dim);">
-                Seoul: 2026-02-04 22:55
+            <div style="text-align: right;">
+                <span style="color: var(--up-color); font-size: 0.8rem;">● System Pacing Active</span><br>
+                <span style="font-size: 0.75rem; color: var(--text-dim);">Last Update: 23:05 KST</span>
             </div>
         </header>
 
         <div class="dashboard-grid">
             <div class="left-col">
-                <!-- TradingView -->
-                <div class="card" style="margin-bottom: 25px;">
-                    <div class="card-header">
-                        <div class="card-title">Market Chart (BTC/USD)</div>
-                    </div>
+                <div class="card">
+                    <div class="card-title">📈 Market Flow (BTCUSDT)</div>
                     <div id="tv_chart_container" class="chart-container"></div>
                 </div>
 
-                <!-- Content Strategy -->
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">📝 AI Content Strategy Drafts</div>
-                        <span style="font-size: 0.8rem; color: var(--primary-color);">Gemini 3 Analyzed</span>
-                    </div>
+                    <div class="card-title">📝 AI Content Strategy & Drafts</div>
                     
                     <div class="draft-item">
-                        <div class="draft-tags"><span class="tag">#MichaelBurry</span><span class="tag">#GoldSurge</span></div>
+                        <div class="draft-meta">TRADING TREND</div>
                         <div class="draft-content">
-                            "빅쇼트 마이클 버리의 경고가 현실화될까요? 비트코인 급락이 10억 달러 규모의 금/은 투매를 부를 수 있다는 분석입니다. 기관들의 유동성 압박이 전방위적으로 확산되는 모습이네요. #BTC #Gold #MichaelBurry"
+                            "비트코인 14개월 저점 이후 $77k 반등 성공! 🚀 하락장에 떨지 마세요. 이번 반등으로 7억 달러 숏 물량이 청산되었습니다. 유동성 파티의 서막일까요? #Bitcoin #BTC #ShortSqueeze"
                         </div>
                     </div>
 
                     <div class="draft-item">
-                        <div class="draft-tags"><span class="tag">#ETHGas</span><span class="tag">#OnChain</span></div>
+                        <div class="draft-meta">X TREND / MEME</div>
                         <div class="draft-content">
-                            "이더리움 가스비 0.091 Gwei 달성! ⛽️ 사실상 온체인 가스비 제로 시대입니다. L2 브릿징이나 대규모 토큰 이동 계획하셨던 분들에겐 지금이 최고의 기회입니다. #Ethereum #GasFee #Web3"
+                            "인공지능(AI)과 크립토의 결합이 다시금 X 트렌드를 장악 중입니다. 🤖⛓️ 밈 코인 메타에서 AI 에이전트 메타로의 전환! 당신의 다음 베팅은? #AI #Crypto #MemeCoin"
+                        </div>
+                    </div>
+
+                    <div class="draft-item">
+                        <div class="draft-meta">GAS ALERT</div>
+                        <div class="draft-content">
+                            "역대급 가스비 0.091 Gwei! ⛽️💨 지금 이더리움 메인넷은 고속도로 프리패스 수준입니다. 미뤄둔 트랜잭션, 지금이 기회입니다. #Ethereum #GasFee #Onchain"
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="right-col">
-                <!-- News -->
-                <div class="card" style="height: 100%; min-height: 800px;">
-                    <div class="card-header">
-                        <div class="card-title">🗞️ Intelligence Feed</div>
-                    </div>
+                <div class="card" style="height: 100%;">
+                    <div class="card-title">🗞️ Intelligence Feed</div>
                     <div class="news-list">
                         <div class="news-item">
-                            <div class="news-meta"><span>12m ago</span><span style="color:var(--up-color)">Positive</span></div>
-                            <a class="news-title">WisdomTree: Crypto is now our core business business.</a>
+                            <span class="trend-badge">X TREND</span> Michael Burry warnings trending as Gold/Silver markets react.
                         </div>
                         <div class="news-item">
-                            <div class="news-meta"><span>34m ago</span><span style="color:var(--down-color)">Critical</span></div>
-                            <a class="news-title">Michael Burry warns BTC plunge triggers $1B precious metal sell-off.</a>
+                            <span class="trend-badge">MEME</span> "Buy the Dip" memes resurfacing as BTC stabilizes above $76k.
                         </div>
                         <div class="news-item">
-                            <div class="news-meta"><span>1h ago</span><span style="color:var(--text-dim)">Policy</span></div>
-                            <a class="news-title">White House: No 'Anti-Trump' provisions in crypto bill.</a>
+                            <span class="trend-badge">HOT</span> WisdomTree CEO declares Crypto as core business.
                         </div>
                         <div class="news-item">
-                            <div class="news-meta"><span>2h ago</span><span style="color:var(--up-color)">Utility</span></div>
-                            <a class="news-title">MetaMask integrates Ondo for tokenized US stocks.</a>
+                            <span class="trend-badge">POLICY</span> Trump WH issues statement on Crypto Bill ethics provisions.
+                        </div>
+                        <div class="news-item">
+                            <span class="trend-badge">TECH</span> Vitalik Buterin's L2 decentralization roadmap update.
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: 20px; background: rgba(29, 161, 242, 0.05); border-color: var(--trend-color);">
+                        <div class="card-title" style="color: var(--trend-color); font-size: 0.9rem;">💎 X Trending Tags</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                            <span class="tag">#BTC740M</span><span class="tag">#GoldSurge</span><span class="tag">#Ondo</span><span class="tag">#AI_Agents</span><span class="tag">#LowGasSummer</span>
                         </div>
                     </div>
                 </div>
@@ -164,18 +147,10 @@
 
     <script>
         new TradingView.widget({
-            "width": "100%",
-            "height": 500,
-            "symbol": "BINANCE:BTCUSDT",
-            "interval": "D",
-            "timezone": "Asia/Seoul",
-            "theme": "dark",
-            "style": "1",
-            "locale": "en",
-            "toolbar_bg": "#f1f3f6",
-            "enable_publishing": false,
-            "allow_symbol_change": true,
-            "container_id": "tv_chart_container"
+            "width": "100%", "height": 450, "symbol": "BINANCE:BTCUSDT",
+            "interval": "D", "timezone": "Asia/Seoul", "theme": "dark", "style": "1",
+            "locale": "ko", "toolbar_bg": "#f1f3f6", "enable_publishing": false,
+            "allow_symbol_change": true, "container_id": "tv_chart_container"
         });
     </script>
 </body>
